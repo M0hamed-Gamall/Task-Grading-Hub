@@ -4,6 +4,9 @@ dotenv.config({
 });
 import express from "express";
 import morgan from "morgan";
+import { connectDB } from "./config/database.js";
+
+await connectDB();
 
 
 
