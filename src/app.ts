@@ -3,8 +3,12 @@ dotenv.config({
   path: "./src/config/.env",
 });
 import express from "express";
+import type { Request, Response, NextFunction } from "express";
 import morgan from "morgan";
 import { connectDB } from "./config/database.js";
+import authRoutes from "./routes/auth.route.js";
+import AppError from "./utils/appError.js";
+import cookieParser from "cookie-parser";
 
 await connectDB();
 
@@ -16,12 +20,23 @@ await connectDB();
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
-
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("starting point");
 });
+app.use("/api/auth", authRoutes);
 
+
+// handle non existing route
+app.use((req, res, next)=> {
+    res.status(404).json({status: "Not Found", message: 'Not Found' })
+})
+
+// Global Error-Handling Middleware
+app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
+    res.status(err.statusCode || 500).json({code: err.statusCode || 500, status: err.statusText || "Internal Server Error" , message: err.message})
+})
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
