@@ -22,9 +22,6 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-  res.send("starting point");
-});
 app.use("/api/auth", authRoutes);
 
 
