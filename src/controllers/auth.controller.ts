@@ -24,4 +24,9 @@ const login = asyncWrapper( async (req: Request, res: Response) => {
   res.status(200).json({accessToken});
 });
 
-export default { register, login };
+const logout = asyncWrapper( async (req: Request, res: Response) => {
+  res.clearCookie("refreshToken");
+  res.status(200).json({message: "Logged out successfully"});
+});
+
+export default { register, login, logout };
