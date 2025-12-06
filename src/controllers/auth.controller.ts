@@ -29,4 +29,10 @@ const logout = asyncWrapper( async (req: Request, res: Response) => {
   res.status(200).json({message: "Logged out successfully"});
 });
 
-export default { register, login, logout };
+const refresh = asyncWrapper(async (req: Request, res: Response) => {
+  const refreshToken = req.cookies.refreshToken;
+  const accessToken = await authService.refresh(refreshToken)
+  res.status(201).json({accessToken});
+})
+
+export default { register, login, logout, refresh };

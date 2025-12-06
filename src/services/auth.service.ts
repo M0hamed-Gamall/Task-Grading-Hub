@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import AppError from '../utils/appError.js';
+import { token } from 'morgan';
 
 /**
  * 
@@ -44,6 +45,24 @@ const login = async (email: string, password: string) => {
   return { accessToken, refreshToken };
 }
 
+const refresh = async (token: string) => {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as jwt.JwtPayload;
+    const userId = (typeof decoded === 'object' && 'id' in decoded) ? decoded.id : null;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new AppError('User not found', 404, 'not_found');
+    }
+
+    const accessToken = generateToken({ id: user._id, email: user.email, role: user.role }, '10m');
+    return accessToken;
+  } catch (err) {
+    throw new AppError('Invalid or expired token', 401, 'unauthorized');
+  }
+}
+
 /**
  * 
  * @param payload - The payload of the token
@@ -54,4 +73,4 @@ const generateToken = (payload: any, expiresIn: string) => {
   return jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: expiresIn as any });
 }
 
-export default { register, login };
+export default { register, login, refresh };

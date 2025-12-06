@@ -15,5 +15,6 @@ router.post('/logout', authController.logout);
 router.get('/protected', authRoles("admin"), (req,res,next) => {
   res.send("passed")
 })
+router.post('/refresh', authController.refresh)
 
 export default router;
