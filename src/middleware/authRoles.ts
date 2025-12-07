@@ -9,7 +9,6 @@ export const authRoles = (...roles: string[]) => {
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
         const userRole = (decoded as any).role ;
-        console.log(userRole)
         if (userRole && roles.includes(userRole)) {
           (req as any).user = decoded;
           return next();
