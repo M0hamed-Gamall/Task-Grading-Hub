@@ -6,10 +6,15 @@ interface AuthenticatedRequest extends Request {
   user: { id: string };
 }
 
-const getUser = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+const getMe = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
   const authenticatedReq = req as AuthenticatedRequest;
   const user = await userService.getUser(authenticatedReq.user.id);
   res.status(200).json(user)
 });
 
-export default {getUser}
+const getUser = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+  const user = await userService.getUser(req.params.id as string)
+  res.status(200).json(user)
+})
+
+export default {getMe, getUser}

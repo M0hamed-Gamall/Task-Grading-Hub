@@ -4,6 +4,7 @@ import userController from "../controllers/user.controller.js"
 
 const router = Router();
 
-router.get('/me', authRoles("student", "admin"), userController.getUser)
+router.get('/me', authRoles("student", "admin"), userController.getMe)
+router.get("/:id", authRoles("admin"), userController.getUser)
 
 export default router;
