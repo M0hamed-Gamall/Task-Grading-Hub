@@ -14,6 +14,7 @@ route.post('/:taskId', authRoles("student"),checkDeadline, createUploader({
 }),
  submissionController.submitTask)
 
+route.get('/:taskId', authRoles("admin"), submissionController.getTaskSubmissions)
 
 
 export default route;

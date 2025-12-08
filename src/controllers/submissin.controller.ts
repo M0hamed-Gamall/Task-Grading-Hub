@@ -30,4 +30,9 @@ const submitTask = asyncWrapper(async (req: Request, res: Response, next: NextFu
   });
 })
 
-export default {submitTask}
+const getTaskSubmissions = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+  const submissions = await submissionService.getTaskSubmissions(req.params.taskId as string)
+  res.status(200).json({submissions})
+})
+
+export default {submitTask, getTaskSubmissions}
