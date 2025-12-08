@@ -15,13 +15,13 @@ export const authRoles = (...roles: string[]) => {
         } 
       } catch (err){
         if ((err as any).name === "TokenExpiredError") {
-          throw new AppError("Access token expired", 401, "TokenExpired");
+          return next(new AppError("Access token expired", 401, "TokenExpired"));
         }
-        throw new AppError("access denied, invalid token", 401, 'Unauthorized')
+        return next(new AppError("access denied, invalid token", 401, 'Unauthorized'));
       }
     } else{
-      throw new AppError("access denied, no token provided", 401, 'Unauthorized');
+      return next(new AppError("access denied, no token provided", 401, 'Unauthorized'));
     } 
-    throw new AppError("you are unauthorized", 401, 'Unauthorized');
+    return next(new AppError("you are unauthorized", 401, 'Unauthorized'));
   }
 }

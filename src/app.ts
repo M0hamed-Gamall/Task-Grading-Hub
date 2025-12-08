@@ -9,6 +9,7 @@ import { connectDB } from "./config/database.js";
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js"
 import taskRoters from "./routes/task.route.js"
+import submissionRouter from "./routes/submission.route.js"
 import AppError from "./utils/appError.js";
 import cookieParser from "cookie-parser";
 
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes)
 app.use("/api/tasks", taskRoters)
+app.use("/api/submissions", submissionRouter)
 
 
 // handle non existing route

@@ -1,9 +1,8 @@
-import type { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import AppError from '../utils/appError.js';
-import { token } from 'morgan';
+
 
 /**
  * 
