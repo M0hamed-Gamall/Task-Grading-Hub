@@ -15,13 +15,13 @@ const userSchema = new Schema<IUser>(
   {
   name : { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true, minlength: 6 },
+  password: { type: String, required: true, minlength: 6, select: false },
   role: { type: String, default: "student", enum: userTypes },
   },
   { timestamps: true}
 )
 
-userSchema.pre("save", function (next) {
+userSchema.pre("save", function (this: IUser, next) {
   if (this.isModified("email") && this.email) {
     this.email = this.email.toLowerCase();
   }

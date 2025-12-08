@@ -26,6 +26,13 @@ const submissionSchema = new Schema<ISubmission>({
   gradedAt: {type: Date}
 })
 
+submissionSchema.pre(/^find/, function (this: ISubmission, next) {
+  this.populate("taskId");
+  this.populate("studentId");
+  this.populate("gradedBy")
+  next();
+});
+
 const Submission = model("Submission", submissionSchema)
 
 export default Submission;

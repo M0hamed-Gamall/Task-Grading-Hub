@@ -18,6 +18,11 @@ const taskShema = new Schema<ITask>({
   {timestamps: true}
 )
 
+taskShema.pre(/^find/, function (this: ITask, next) {
+  this.populate("publishedBy");
+  next();
+});
+
 const Task = model("Task", taskShema)
 
 export default Task;
