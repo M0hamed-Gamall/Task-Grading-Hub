@@ -28,5 +28,9 @@ const getSubmission = async(submissionId: string) => {
   return submission;
 }
 
+const getStudentSubmissions = async(studentId: string) => {
+  const submissions = await Submission.find({studentId})
+  return submissions;
+}
 
-export default {submitTask, getTaskSubmissions, getSubmission}
+export default {submitTask, getTaskSubmissions, getSubmission, getStudentSubmissions}

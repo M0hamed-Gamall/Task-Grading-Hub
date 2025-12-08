@@ -7,6 +7,9 @@ import { belongToStudent } from "../middleware/belongtoStudent.js"
 
 const route = Router()
 
+route.get('/submission/:id', authRoles("admin", "student"), belongToStudent, submissionController.getSubmission)
+
+route.get('/me', authRoles("student"), submissionController.getStudentSubmissions)
 
 route.post('/:taskId', authRoles("student"),checkDeadline, createUploader({
   allowedTypes: ["application/pdf"],
@@ -15,8 +18,6 @@ route.post('/:taskId', authRoles("student"),checkDeadline, createUploader({
 }),
  submissionController.submitTask)
 
-route.get('/:taskId', authRoles("admin"), submissionController.getTaskSubmissions)
-
-route.get('/submission/:id', authRoles("admin", "student"), belongToStudent, submissionController.getSubmission)
+ route.get('/:taskId', authRoles("admin"), submissionController.getTaskSubmissions)
 
 export default route;
