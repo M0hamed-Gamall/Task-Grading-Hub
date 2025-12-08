@@ -17,4 +17,9 @@ const tasksGrades = async(taskId: string) => {
   return grades;
 }
 
-export default {grade, tasksGrades}
+const taskGrade = async(taskId: string, studentId: string) => {
+  const grades = await Submission.find({taskId, status: status.graded, studentId})
+  return grades;
+}
+
+export default {grade, tasksGrades, taskGrade}

@@ -40,6 +40,7 @@ app.use((req, res, next)=> {
 
 // Global Error-Handling Middleware
 app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
+  console.log(err)
     res.status(err.statusCode || 500).json({code: err.statusCode || 500, status: err.statusText || "Internal Server Error" , message: err.message})
 })
 

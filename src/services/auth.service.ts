@@ -31,7 +31,7 @@ const register = async (name: string, email: string, password: string) => {
  * @returns The access token and refresh token
  */
 const login = async (email: string, password: string) => {
-  const user = await User.findOne({email});
+  const user = await User.findOne({email}).select("+password");
   if (!user) {
     throw new AppError("Invalid email or password", 401, "unauthorized");
   }
