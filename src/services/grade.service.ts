@@ -12,4 +12,9 @@ const grade = async(submissionId: string, degree: number, feedback: string) => {
   return submission;
 }
 
-export default {grade}
+const tasksGrades = async(taskId: string) => {
+  const grades = await Submission.find({taskId, status: status.graded})
+  return grades;
+}
+
+export default {grade, tasksGrades}

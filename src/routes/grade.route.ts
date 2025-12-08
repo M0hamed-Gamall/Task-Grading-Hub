@@ -5,4 +5,6 @@ const router = Router()
 
 router.post('/:submissionId', authRoles("admin"), gradeController.grade)
 
+router.get('/tasks/:taskId', authRoles("admin"), gradeController.getGrades)
+
 export default router;
