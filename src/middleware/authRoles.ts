@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { type JwtPayload } from 'jsonwebtoken';
 import AppError from '../utils/appError.js';
 
 export const authRoles = (...roles: string[]) => {
@@ -7,10 +7,14 @@ export const authRoles = (...roles: string[]) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (token) {
       try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-        const userRole = (decoded as any).role ;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
+        const userRole = decoded.role;
         if (userRole && roles.includes(userRole)) {
-          (req as any).user = decoded;
+          req.user = {
+            id: decoded.id as string,
+            email: decoded.email as string,
+            role: decoded.role as string,
+          };
           return next();
         } 
       } catch (err){

@@ -3,19 +3,12 @@ import asyncWrapper from "../middleware/asyncwrapper.js";
 import AppError from "../utils/appError.js";
 import submissionService from "../services/submission.service.js" 
 
-interface UserRequest extends Request {
-  user?: {
-    id: string;
-    role: string
-  };
-}
-
-const submitTask = asyncWrapper(async (req: UserRequest, res: Response, next: NextFunction) => {
+const submitTask = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
   if (!req.file) {
     throw new AppError("No file uploaded", 400, "Bad Request");
   }
   const taskId = req.params.taskId as string
-  const studentId = req.user?.id as string
+  const studentId = req.user!.id
   const filename = req.file.originalname
   const url = req.file.path
   const mimeType = req.file.mimetype
@@ -38,8 +31,8 @@ const getSubmission = asyncWrapper(async (req: Request, res: Response, next: Nex
   res.status(200).json(submission)
 })
 
-const getStudentSubmissions = asyncWrapper(async (req: UserRequest, res: Response, next: NextFunction) => {
-  const submissions = await submissionService.getStudentSubmissions(req.user?.id as string)
+const getStudentSubmissions = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+  const submissions = await submissionService.getStudentSubmissions(req.user!.id)
   res.status(200).json({submissions})
 })
 
