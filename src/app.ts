@@ -13,6 +13,8 @@ import gradeRouters from "./routes/grade.route.js"
 import submissionRouter from "./routes/submission.route.js"
 import AppError from "./utils/appError.js";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger.js";
 
 await connectDB();
 
@@ -25,6 +27,12 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
+
+// Swagger UI
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: "Task Grading Hub API Documentation",
+}));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes)
