@@ -3,6 +3,7 @@ import { userTypes } from "../constants/userTypes.js";
 
 interface IUser extends Document {
   name: string;
+  googleId: string;
   email: string;
   password: string;
   role: string;
@@ -13,9 +14,10 @@ interface IUser extends Document {
 
 const userSchema = new Schema<IUser>(
   {
-  name : { type: String, required: true },
+  name : { type: String },
+  googleId: { type: String, unique: true, sparse: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true, minlength: 6, select: false },
+  password: { type: String, minlength: 6, select: false },
   role: { type: String, default: "student", enum: userTypes },
   },
   { timestamps: true}

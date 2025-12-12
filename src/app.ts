@@ -15,6 +15,7 @@ import AppError from "./utils/appError.js";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger.js";
+import "./config/passport.config.js";
 import cors from "cors"
 
 await connectDB();
@@ -35,6 +36,11 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customCss: '.swagger-ui .topbar { display: none }',
   customSiteTitle: "Task Grading Hub API Documentation",
 }));
+
+// Google Auth Success Route for Testing
+app.get("/google-success", (req: Request, res: Response) => {
+  res.send("Google Authentication Successful! You can close this window.");
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes)

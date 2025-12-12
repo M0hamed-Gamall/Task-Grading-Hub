@@ -24,6 +24,16 @@ const login = asyncWrapper( async (req: Request, res: Response) => {
   res.status(200).json({accessToken});
 });
 
+const googleAuthCallback = asyncWrapper( async (req: Request, res: Response) => {
+  const refreshToken  = await authService.googleAuth(req.user);
+  res.cookie("refreshToken", refreshToken, {
+     httpOnly: true,
+     secure: process.env.NODE_ENV === "production",
+     maxAge: 7 * 24 * 60 * 60 * 1000, 
+    });
+  res.redirect(process.env.CLIENT_URL + '/google-success'); // frontend handle this endpoint
+});
+
 const logout = asyncWrapper( async (req: Request, res: Response) => {
   res.clearCookie("refreshToken");
   res.status(200).json({message: "Logged out successfully"});
@@ -35,4 +45,4 @@ const refresh = asyncWrapper(async (req: Request, res: Response) => {
   res.status(201).json({accessToken});
 })
 
-export default { register, login, logout, refresh };
+export default { register, login, logout, refresh, googleAuthCallback };

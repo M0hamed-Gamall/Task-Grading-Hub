@@ -62,6 +62,11 @@ const refresh = async (token: string) => {
   }
 }
 
+const googleAuth = async (user: any) => {
+  const refreshToken = generateToken({ id: user._id }, '7d');
+  return refreshToken; 
+};
+
 /**
  * 
  * @param payload - The payload of the token
@@ -72,4 +77,4 @@ const generateToken = (payload: any, expiresIn: string) => {
   return jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: expiresIn as any });
 }
 
-export default { register, login, refresh };
+export default { register, login, refresh, googleAuth };
